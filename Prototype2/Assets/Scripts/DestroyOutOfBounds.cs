@@ -23,7 +23,7 @@ public class DestroyOutOfBounds : MonoBehaviour
         //Animal goes out of bounds:
         if (transform.position.z < bottomBound)
         {
-            Debug.Log("Game Over!");
+            HealthManager.instance.TakeDamage();
             Destroy(gameObject);
         }
     }

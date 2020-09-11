@@ -17,8 +17,6 @@ public class SpawnManager : MonoBehaviour
     private float rightBound = 14;
     private float zSpawnPos = 20;
 
-    private bool gameOver = false;
-
     private void Start()
     {
         StartCoroutine(LoopSpawns());
@@ -29,7 +27,7 @@ public class SpawnManager : MonoBehaviour
         //Wait 3 seconds before beginning to spawn enemies.
         yield return new WaitForSeconds(3f);
 
-        while (!gameOver)
+        while (!HealthManager.instance.gameOver)
         {
             SpawnRandomPrefab();
             float randomDelay = Random.Range(0.8f, 2.0f);

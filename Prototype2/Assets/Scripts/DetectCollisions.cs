@@ -12,6 +12,7 @@ public class DetectCollisions : MonoBehaviour
 {
     private void OnTriggerEnter(Collider col)
     {
+        ScoreManager.instance.Score++;
         Destroy(col.gameObject);
         Destroy(gameObject);
     }

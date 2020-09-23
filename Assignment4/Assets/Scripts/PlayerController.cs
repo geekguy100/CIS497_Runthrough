@@ -10,16 +10,28 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
+    private Animator anim;
     public float jumpForce;
     public ForceMode jumpForceMode;
     public float gravityModifier = 5f;
 
     private bool isOnGround = true;
 
+    //Particles
+    [SerializeField] private ParticleSystem explosionParticle;
+    [SerializeField] private ParticleSystem dirtParticle;
+
+    //SFX
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip crashSound;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         //Set reference to rigidbody variable.
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -27,6 +39,8 @@ public class PlayerController : MonoBehaviour
         //Make sure the rigidbody is not using gravity because we are controlling it manually in here.
         if (rb.useGravity)
             rb.useGravity = false;
+
+        anim.SetFloat("Speed_f", 1.0f);
     }
 
     private void FixedUpdate()
@@ -41,7 +55,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isOnGround && !GameManager.instance.GameOver)
         {
             rb.AddForce(Vector3.up * jumpForce, jumpForceMode);
+            anim.SetTrigger("Jump_trig");
             isOnGround = false;
+            audioSource.PlayOneShot(jumpSound);
+            dirtParticle.Stop();
+        }
+        else if (GameManager.instance.GameOver && anim.GetFloat("Speed_f") != 0f)
+        {
+            anim.SetFloat("Speed_f", 0f);
         }
     }
 
@@ -50,10 +71,16 @@ public class PlayerController : MonoBehaviour
         if (col.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            if (!dirtParticle.isPlaying)
+                dirtParticle.Play();
         }
         else if (col.gameObject.CompareTag("Obstacle") && !GameManager.instance.GameOver)
         {
-            Debug.Log("Game Over!");
+            explosionParticle.Play();
+            dirtParticle.Stop();
+            anim.SetBool("Death_b", true);
+            anim.SetInteger("DeathType_int", 1);
+            audioSource.PlayOneShot(crashSound);
             GameManager.instance.GameOver = true;
         }
     }

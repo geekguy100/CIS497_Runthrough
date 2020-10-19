@@ -1,3 +1,12 @@
+/*
+ * Kyle Grenier
+ * 3D Prototype
+ * 
+ * 10/18/2020
+ * 
+ * Description: A Target script that contains health. Health is depleted when hit from a raycast by the player.
+ */
+
 using UnityEngine;
 
 public class Target : MonoBehaviour

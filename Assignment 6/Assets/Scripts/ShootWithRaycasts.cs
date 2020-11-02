@@ -20,7 +20,7 @@ public class ShootWithRaycasts : MonoBehaviour
 
     private void Awake()
     {
-        cam = GameObject.FindGameObjectWithTag("Camera").transform;
+        cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 
     private void Update()
@@ -39,11 +39,10 @@ public class ShootWithRaycasts : MonoBehaviour
         {
             Debug.Log(hitInfo.transform.name);
 
-            //Extract the Target script from the hit object.
-            Target target = hitInfo.transform.gameObject.GetComponent<Target>();
-            //If the Target script was found, call the TakeDamage() method.
-            if (target != null)
-                target.TakeDamage(damage);
+            //Get the Cube script from the hit object.
+            Cube c = hitInfo.transform.GetComponent<Cube>();
+            if (c != null)
+                c.TakeDamage(1);
 
             //If the hit object has a rigidbody, apply the hit force to it.
             if (hitInfo.rigidbody != null)

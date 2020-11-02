@@ -16,7 +16,7 @@ public class MouseLook : MonoBehaviour
     private float verticalLookRotation = 0f;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Get mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -33,10 +33,5 @@ public class MouseLook : MonoBehaviour
 
         //Apply the clamped rotation.
         transform.localRotation = Quaternion.Euler(verticalLookRotation, 0, 0);
-    }
-
-    private void OnApplicationFocus(bool focus)
-    {
-        Cursor.lockState = CursorLockMode.Locked;
     }
 }

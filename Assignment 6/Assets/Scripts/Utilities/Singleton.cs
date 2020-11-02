@@ -23,7 +23,10 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     protected virtual void Awake()
     {
         if (instance != null)
+        {
             Debug.LogWarning(gameObject.name + ": Trying to instantiate a second instance of singleton.");
+            Destroy(gameObject);
+        }
         else
             instance = (T)this;
     }

@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private float forwardInput;
     private GameObject focalPoint;
 
-    [SerializeField] private GameObject powerupIndicator;
+    [SerializeField] private GameObject powerupIndicator = null;
     private bool hasPowerup = false;
     private float powerupStength = 15.0f;
 
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(7f);
         hasPowerup = false;
-        powerupIndicator.SetActive(true);
+        powerupIndicator.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -29,6 +29,9 @@ public class EnemyAI : MonoBehaviour
     {
         if (player != null)
             direction = (player.transform.position - transform.position).normalized;
+
+        if (transform.position.y < -10f)
+            Destroy(gameObject);
     }
 
     private void FixedUpdate()

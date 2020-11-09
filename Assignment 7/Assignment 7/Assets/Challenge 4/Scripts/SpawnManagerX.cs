@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +11,10 @@ public class SpawnManagerX : MonoBehaviour
     private float spawnZMin = 15; // set min spawn Z
     private float spawnZMax = 25; // set max spawn Z
 
+    public static float enemySpeed = 10f;
+
     public int enemyCount;
-    public int waveCount = 1;
+    private int waveCount = 1;
 
 
     public GameObject player; 
@@ -20,7 +22,11 @@ public class SpawnManagerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyCount = GameObject.FindGameObjectsWithTag("Powerup").Length;
+        //Don't spawn until game starts. Don't spawn if it has ended.
+        if (!GameManager.Instance.GameStarted || GameManager.Instance.GameOver)
+            return;
+
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
         if (enemyCount == 0)
         {
@@ -40,6 +46,16 @@ public class SpawnManagerX : MonoBehaviour
 
     void SpawnEnemyWave(int enemiesToSpawn)
     {
+        GameManager.Instance.UpdateWaveText(waveCount);
+        ResetPlayerPosition(); // put player back at start
+
+        //Once the player survives THROUGH all waves, end the game.
+        if (waveCount >= GameManager.Instance.WinningWave + 1)
+        {
+            GameManager.Instance.GameWon = true;
+            return;
+        }
+
         Vector3 powerupSpawnOffset = new Vector3(0, 0, -15); // make powerups spawn at player end
 
         // If no powerups remain, spawn a powerup
@@ -49,14 +65,14 @@ public class SpawnManagerX : MonoBehaviour
         }
 
         // Spawn number of enemy balls based on wave number
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
             Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
         }
 
+        GameObject.FindGameObjectWithTag("PlayerGoal").GetComponent<PlayerGoalBehaviour>().OnWaveStart();
         waveCount++;
-        ResetPlayerPosition(); // put player back at start
-
+        enemySpeed += 2;
     }
 
     // Move player back to position in front of own goal

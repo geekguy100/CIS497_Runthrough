@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private TextMeshProUGUI waveText = null;
     [SerializeField] private TextMeshProUGUI gameStatusText = null;
+    [SerializeField] private KeyCode startGameKey = KeyCode.Space;
 
     private bool gameStarted = false;
     private bool gameOver = false;
@@ -75,7 +76,7 @@ public class GameManager : Singleton<GameManager>
     void SetupGame()
     {
         waveText.text = "Wave: 0/" + winningWave;
-        gameStatusText.text = "Survive " + winningWave + " Waves to Win!\nPress Spacebar to Continue...";
+        gameStatusText.text = "Survive " + winningWave + " Waves to Win!\nPress \'" + startGameKey.ToString() + "\' to Continue...";
     }
 
     void StartGame()

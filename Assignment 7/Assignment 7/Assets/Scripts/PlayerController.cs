@@ -28,6 +28,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //Don't allow the player to move if the game hasn't started or over.
+        if (!GameManager.Instance.GameStarted || GameManager.Instance.GameOver)
+            return;
+
+        if (transform.position.y < -10f)
+            GameManager.Instance.GameOver = true;
+
         forwardInput = Input.GetAxis("Vertical");
 
         //Update powerup indicator's position to the player.

@@ -15,13 +15,7 @@ public class SpawnManager : MonoBehaviour
     private float spawnRange = 9f;
 
     private int enemyCount = 0;
-    private int waveNumber = 1;
-
-    private void Start()
-    {
-        SpawnEnemyWave(waveNumber);
-        SpawnPowerup(1);
-    }
+    private int waveNumber = 0;
 
     private void SpawnEnemyWave(int enemiesToSpawn)
     {
@@ -50,13 +44,26 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
+        //If the game hasnt started or is over, don't spawn enemies.
+        if (!GameManager.Instance.GameStarted || GameManager.Instance.GameOver)
+            return;
+
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
         if (enemyCount == 0)
         {
             waveNumber++;
+
+            //If the game has been won; player survived through the winning number of waves.
+            if (waveNumber >= GameManager.Instance.WinningWave + 1)
+            {
+                GameManager.Instance.GameWon = true;
+                return;
+            }
+
             SpawnEnemyWave(waveNumber);
             SpawnPowerup(1);
+            GameManager.Instance.UpdateWaveText(waveNumber);
         }
     }
 }

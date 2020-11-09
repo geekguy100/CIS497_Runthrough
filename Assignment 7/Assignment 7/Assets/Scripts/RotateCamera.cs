@@ -13,6 +13,9 @@ public class RotateCamera : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.GameOver)
+            return;
+
         float horizonal = Input.GetAxis("Horizontal");
         transform.Rotate(Vector3.up * horizonal * rotationSpeed * Time.deltaTime);
     }

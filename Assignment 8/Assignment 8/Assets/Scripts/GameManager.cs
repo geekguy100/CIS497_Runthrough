@@ -6,6 +6,7 @@
 // Brief Description : A GameManager class to handle the game state and spawning objects.
 *****************************************************************************/
 using UnityEngine;
+using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -14,9 +15,27 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private List<GameObject> targets;
     private float spawnRate = 1f;
 
+    [SerializeField] private TextMeshProUGUI scoreText;
+    private int score;
+    //Decided to use a property to update score & score text instead of writing a function.
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+
+        set
+        {
+            score = value;
+            scoreText.text = "Score: " + score;
+        }
+    }
+
     void Start()
     {
         StartCoroutine(SpawnTarget());
+        Score = 0;
     }
 
     IEnumerator SpawnTarget()
@@ -32,10 +51,5 @@ public class GameManager : Singleton<GameManager>
             //Spawn prefab at random index.
             Instantiate(targets[index]);
         }
-    }
-
-    void Update()
-    {
-        
     }
 }

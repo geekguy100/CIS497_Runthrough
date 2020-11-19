@@ -19,6 +19,8 @@ public class Target : MonoBehaviour
     private float xRange = 4;
     private float ySpawnPos = -6;
 
+    [SerializeField] private int pointValue = 5;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -51,6 +53,7 @@ public class Target : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
+        GameManager.Instance.Score += pointValue;
         Destroy(gameObject);
     }
 

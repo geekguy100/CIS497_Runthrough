@@ -3,7 +3,7 @@
 // Author :            Kyle Grenier
 // Creation Date :     11/17/2020
 // Assignment 8
-// Brief Description : ADD BRIEF DESCRIPTION OF THE FILE HERE
+// Brief Description : Controls behaviour of in-game targets.
 *****************************************************************************/
 using UnityEngine;
 
@@ -44,5 +44,21 @@ public class Target : MonoBehaviour
     private Vector3 RandomSpawnPos()
     {
         return new Vector3(Random.Range(-xRange,xRange), ySpawnPos);
+    }
+
+    /// <summary>
+    /// Destroy the target on mouse click.
+    /// </summary>
+    private void OnMouseDown()
+    {
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Destroy the target upon entering the Sensor trigger; the only trigger in the scene.
+    /// </summary>
+    private void OnTriggerEnter()
+    {
+        Destroy(gameObject);
     }
 }

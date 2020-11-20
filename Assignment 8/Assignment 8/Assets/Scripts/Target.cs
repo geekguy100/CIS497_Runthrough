@@ -11,15 +11,22 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     private Rigidbody rb;
+
+    //Speed and torque
     private float minSpeed = 12;
     private float maxSpeed = 16;
     private float minTorque = -10;
     private float maxTorque = 10;
 
+    //Spawning variables.
     private float xRange = 4;
     private float ySpawnPos = -6;
 
+    //Scoring variables.
     [SerializeField] private int pointValue = 5;
+
+    //Explosion particle. Plays on click.
+    [SerializeField] private ParticleSystem explosionParticle = null;
 
     private void Awake()
     {
@@ -53,15 +60,26 @@ public class Target : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        GameManager.Instance.Score += pointValue;
-        Destroy(gameObject);
+        //Allow objects to be clicked on and score to increase if the game is NOT over.
+        if (!GameManager.Instance.GameOver)
+        {
+            GameManager.Instance.Score += pointValue;
+            Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>
-    /// Destroy the target upon entering the Sensor trigger; the only trigger in the scene.
+    /// Destroy the target upon entering the Sensor trigger.
     /// </summary>
     private void OnTriggerEnter()
     {
-        Destroy(gameObject);
+        //If we miss hitting a "Good" object and it falls into the sensor, game over. 
+        if (CompareTag("Good"))
+        {
+            GameManager.Instance.GameOver = true;
+            Destroy(gameObject);
+        }
     }
 }

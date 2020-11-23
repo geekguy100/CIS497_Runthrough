@@ -61,10 +61,10 @@ public class GameManager : Singleton<GameManager>
         titleScreen.SetActive(false);
         scoreText.gameObject.SetActive(true);
         spawnRate /= difficulty;
-
-        StartCoroutine(SpawnTarget());
         GameOver = false;
         Score = 0;
+
+        StartCoroutine(SpawnTarget());
     }
 
     IEnumerator SpawnTarget()
